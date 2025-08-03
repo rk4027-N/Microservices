@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  bank-service:
+    build: ./bank-service
+    ports:
+      - "8081:80"
+    networks:
+      - app-network
+
+  bus-service:
+    build: ./bus-service
+    ports:
+      - "8082:80"
+    networks:
+      - app-network
+
+  train-service:
+    build: ./train-service
+    ports:
+      - "8083:80"
+    networks:
+      - app-network
+
+  flight-service:
+    build: ./flight-service
+    ports:
+      - "8084:80"
+    networks:
+      - app-network
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - bank-service
+      - bus-service
+      - train-service
+      - flight-service
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
